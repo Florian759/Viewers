@@ -144,7 +144,7 @@ const _showUserMessage = (queryParamApplied, message, dialog = {}) => {
     return;
   }
 
-  const { show: showUserMessage = () => {} } = dialog;
+  const { show: showUserMessage = () => { } } = dialog;
   showUserMessage({
     message,
   });
@@ -269,6 +269,8 @@ function ViewerRetrieveStudyData({
    * @param {string} [filters.seriesInstanceUID] - series instance uid to filter results against
    */
   const processStudies = (studiesData, filters) => {
+    console.log("*** processStudies, (studiesData, filters)", studiesData, filters)
+
     if (Array.isArray(studiesData) && studiesData.length > 0) {
       // Map studies to new format, update metadata manager?
       const studies = studiesData.map(study => {
@@ -329,6 +331,7 @@ function ViewerRetrieveStudyData({
   };
 
   const loadStudies = async () => {
+
     try {
       const filters = {};
       // Use the first, discard others
@@ -350,11 +353,14 @@ function ViewerRetrieveStudyData({
         retrieveParams.push(true); // Seperate SeriesInstanceUID filter calls.
       }
 
+      // Peticion Wado
+      console.log("*** ViewerRetrieveStudyData, loadStudies, (retrieveParams)", retrieveParams)
       cancelableStudiesPromises[studyInstanceUIDs] = makeCancelable(
         retrieveStudiesMetadata(...retrieveParams)
       )
         .then(result => {
           if (result && !result.isCanceled) {
+            // Procesa datos peticion Wado
             processStudies(result, filters);
           }
         })
@@ -421,6 +427,8 @@ function ViewerRetrieveStudyData({
     return <NotFound message="Failed to retrieve study data" />;
   }
 
+  console.log("*** ViewerRetrieveStudyData, studyInstanceUIDs", studyInstanceUIDs)
+  console.log("*** ViewerRetrieveStudyData, studies", studies)
   return (
     <ConnectedViewer
       studies={studies}

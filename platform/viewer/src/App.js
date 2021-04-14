@@ -161,6 +161,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("*** Render app")
     const { whiteLabeling, routerBasename } = this._appConfig;
     const {
       UINotificationService,

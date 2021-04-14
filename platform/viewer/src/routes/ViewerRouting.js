@@ -30,6 +30,7 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
     seriesInstanceUIDs,
   } = routeMatch.params;
 
+  //console.log("*** ViewerRouting", routeMatch.params)
   // Set the user's default authToken for outbound DICOMWeb requests.
   // Is only applied if target server does not set `requestOptions` property.
   //
@@ -44,6 +45,10 @@ function ViewerRouting({ match: routeMatch, location: routeLocation }) {
   const server = useServer({ project, location, dataset, dicomStore });
   const studyUIDs = UrlUtil.paramString.parseParam(studyInstanceUIDs);
   const seriesUIDs = getSeriesInstanceUIDs(seriesInstanceUIDs, routeLocation);
+
+  //console.log("*** ViewerRouting, server", server)
+  //console.log("*** ViewerRouting, studyUIDs", studyUIDs)
+  //console.log("*** ViewerRouting, seriesUIDs", seriesUIDs)
 
   if (server && studyUIDs) {
     return (
