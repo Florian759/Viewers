@@ -9,6 +9,7 @@ import { useSnackbarContext, useLogger } from '@ohif/ui';
 import ViewportPane from './ViewportPane.js';
 import DefaultViewport from './DefaultViewport.js';
 import EmptyViewport from './EmptyViewport.js';
+import OHIFCornerstoneExtension from '@ohif/extension-cornerstone';
 
 const { loadAndCacheDerivedDisplaySets } = utils;
 
@@ -186,6 +187,9 @@ function _getViewportComponent(
 ) {
   if (viewportData.displaySet) {
     pluginName = pluginName || defaultPluginName;
+    console.log("*** pluginName", pluginName)
+
+    //Aquí ViewportComponent es igual a Cornertone
     const ViewportComponent = availablePlugins[pluginName];
 
     if (!ViewportComponent) {

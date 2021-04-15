@@ -12,7 +12,7 @@ import AppContext from '../context/AppContext';
 import NotFound from '../routes/NotFound';
 
 const { OHIFStudyMetadata, OHIFSeriesMetadata } = metadata;
-const { retrieveStudiesMetadata, deleteStudyMetadataPromise } = studies;
+const { retrieveStudiesMetadata, retrieveStudyMetadata, deleteStudyMetadataPromise } = studies;
 const { studyMetadataManager, makeCancelable } = utils;
 
 const _promoteToFront = (list, values, searchMethod) => {
@@ -316,7 +316,7 @@ function ViewerRetrieveStudyData({
     const loadNextSeries = async () => {
       if (!seriesLoader.hasNext()) return;
       const series = await seriesLoader.next();
-      _addSeriesToStudy(studyMetadata, series);
+      _a1ddSeriesToStudy(studyMetadata, series);
       forceRerender();
       return loadNextSeries();
     };
@@ -353,15 +353,35 @@ function ViewerRetrieveStudyData({
         retrieveParams.push(true); // Seperate SeriesInstanceUID filter calls.
       }
 
+      console.log("*** processStudies retrieveParams", retrieveParams)
       // Peticion Wado
       console.log("*** ViewerRetrieveStudyData, loadStudies, (retrieveParams)", retrieveParams)
-      cancelableStudiesPromises[studyInstanceUIDs] = makeCancelable(
-        retrieveStudiesMetadata(...retrieveParams)
-      )
+
+      const server = {
+        "wadoRoot": "http://172.26.0.106/dcm4chee-arc/aets/DCM4CHEE/rs",
+        "wadoUriRoot": "wadouri:http://172.26.0.106/dcm4chee-arc/aets/DCM4CHEE/wado",
+        "name": "DCM4CHEE",
+        "qidoRoot": "http://172.26.0.106/dcm4chee-arc/aets/DCM4CHEE/rs",
+        "qidoSupportsIncludeField": true,
+        "imageRendering": "wadors",
+        "thumbnailRendering": "wadors",
+        "supportsFuzzyMatching": true,
+        "type": "dicomWeb"
+      }
+
+      const studyInstanceUid = '1.2.826.0.1.3680043.2.541.1.0.20160927094747263008'
+
+      cancelableStudiesPromises[studyInstanceUIDs] =
+        //retrieveStudiesMetadata(...retrieveParams)
+        makeCancelable(retrieveStudyMetadata(
+          server,
+          studyInstanceUid,
+        ))
         .then(result => {
           if (result && !result.isCanceled) {
+            console.log("*** processStudies, (studiesData, filters)", result)
             // Procesa datos peticion Wado
-            processStudies(result, filters);
+            // processStudies(result, filters);
           }
         })
         .catch(error => {
@@ -371,6 +391,7 @@ function ViewerRetrieveStudyData({
           }
         });
     } catch (error) {
+      console.log("*** processStudies error", error)
       if (error) {
         setError(error);
         log.error(error);

@@ -14,6 +14,7 @@ const getAvailableViewportModules = memoize(viewportModules => {
 });
 
 const mapStateToProps = state => {
+  console.log("*** mapStateToProps", extensionManager.modules)
   const viewportModules = extensionManager.modules[MODULE_TYPES.VIEWPORT];
   const availableViewportModules = getAvailableViewportModules(viewportModules);
 

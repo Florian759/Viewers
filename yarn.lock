@@ -2715,6 +2715,20 @@
   dependencies:
     "@types/node" "^12.11.1"
 
+"@ohif/core@^1.13.3":
+  version "1.13.3"
+  resolved "https://registry.yarnpkg.com/@ohif/core/-/core-1.13.3.tgz#fcbafe8211446c4dcef41b5921a55bbf0358b961"
+  integrity sha512-pUgcs9gCYYBBf+1dGxCKuZaclUDljtac6IbqAvr6KeX1vumJixDGUYYTiaxxIrIoZCSm/Ujk2K+orE3RGZRzzQ==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    ajv "^6.10.0"
+    dicomweb-client "^0.5.2"
+    isomorphic-base64 "^1.0.2"
+    lodash.clonedeep "^4.5.0"
+    lodash.merge "^4.6.1"
+    mousetrap "^1.6.3"
+    validate.js "^0.12.0"
+
 "@ohif/i18n@^0.2.3":
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/@ohif/i18n/-/i18n-0.2.5.tgz#2b92a78109823ce0f50dd590201d980a5fd64974"

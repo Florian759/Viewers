@@ -115,6 +115,8 @@ class App extends Component {
 
     const { config, defaultExtensions } = props;
 
+    console.log("*** App, config", config)
+
     const appDefaultConfig = {
       showStudyList: true,
       cornerstoneExtensionConfig: {},
@@ -145,11 +147,16 @@ class App extends Component {
       MeasurementService,
       LoggerService,
     ]);
+
+
+    // Aquí carga las extensiones, extensionManager = undefined
     _initExtensions(
       [...defaultExtensions, ...extensions],
       cornerstoneExtensionConfig,
       this._appConfig
     );
+
+    console.log("*** App, extensionManager", extensionManager)
 
     /*
      * Must run after extension commands are registered
@@ -161,7 +168,7 @@ class App extends Component {
   }
 
   render() {
-    console.log("*** Render app")
+    console.log("*** Render app ***")
     const { whiteLabeling, routerBasename } = this._appConfig;
     const {
       UINotificationService,
@@ -210,7 +217,7 @@ class App extends Component {
       <ErrorBoundary context="App">
         <Provider store={store}>
           <AppProvider config={this._appConfig}>
-            <I18nextProvider i18n={i18n}>
+            {/* <I18nextProvider i18n={i18n}> */}
               <Router basename={routerBasename}>
                 <WhiteLabelingContext.Provider value={whiteLabeling}>
                   <LoggerProvider service={LoggerService}>
@@ -227,7 +234,7 @@ class App extends Component {
                   </LoggerProvider>
                 </WhiteLabelingContext.Provider>
               </Router>
-            </I18nextProvider>
+            {/* </I18nextProvider> */}
           </AppProvider>
         </Provider>
       </ErrorBoundary>
@@ -356,4 +363,5 @@ function _makeAbsoluteIfNecessary(url, base_url) {
 const ExportedApp = process.env.NODE_ENV === 'development' ? hot(App) : App;
 
 export default ExportedApp;
+//Aquí exporta extensionManager
 export { commandsManager, extensionManager, hotkeysManager, servicesManager };
